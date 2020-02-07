@@ -20,9 +20,9 @@ class AMCosineSoftmaxClf(Block):
 			linear = mx.nd.clip(linear, -1, 1)
 
 			#compute adjusted log softmax
-	    	numerator = self.kappa * (mx.nd.linalg.extractdiag(mx.nd.transpose(linear, (1, 0))[labels]) - self.margin)
-		    excl_dims = [mx.nd.concat(linear[i, :int(y.asscalar())], linear[i, int(y.asscalar())+1:], dim=0) for i, y in enumerate(labels)]
-		    excl = mx.nd.stack(*excl_dims, axis=0)
-		    denominator = mx.nd.exp(numerator) + mx.nd.sum(mx.nd.exp(self.kappa * excl), axis=1)
-		    logits = numerator - mx.nd.log(denominator)
-	        return logits
+	    		numerator = self.kappa * (mx.nd.linalg.extractdiag(mx.nd.transpose(linear, (1, 0))[labels]) - self.margin)
+			excl_dims = [mx.nd.concat(linear[i, :int(y.asscalar())], linear[i, int(y.asscalar())+1:], dim=0) for i, y in enumerate(labels)]
+			excl = mx.nd.stack(*excl_dims, axis=0)
+			denominator = mx.nd.exp(numerator) + mx.nd.sum(mx.nd.exp(self.kappa * excl), axis=1)
+			logits = numerator - mx.nd.log(denominator)
+		return logits
